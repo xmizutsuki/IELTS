@@ -3,23 +3,30 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   createInitialProgress,
+  getMistakes,
   getProfile,
   getProgress,
   saveProfile,
   saveProgress,
 } from "@/lib/storage/db";
 import { nextStudyPosition } from "@/lib/adaptive/daily-plan";
-import { Skill, StudyProgress, UserProfile } from "@/types";
+import { Mistake, Skill, StudyProgress, UserProfile } from "@/types";
 
 export function useLocalStudy() {
   const [profile, setProfileState] = useState<UserProfile | null>(null);
   const [progress, setProgressState] = useState<StudyProgress | null>(null);
+  const [mistakes, setMistakes] = useState<Mistake[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
-    const [storedProfile, storedProgress] = await Promise.all([getProfile(), getProgress()]);
+    const [storedProfile, storedProgress, storedMistakes] = await Promise.all([
+      getProfile(),
+      getProgress(),
+      getMistakes(),
+    ]);
     setProfileState(storedProfile ?? null);
     setProgressState(storedProgress ?? null);
+    setMistakes(storedMistakes);
     setLoading(false);
   }, []);
 
@@ -32,6 +39,7 @@ export function useLocalStudy() {
     const current = (await getProgress()) ?? (await createInitialProgress());
     setProfileState(newProfile);
     setProgressState(current);
+    setMistakes(await getMistakes());
   }, []);
 
   const toggleTask = useCallback(
@@ -79,6 +87,7 @@ export function useLocalStudy() {
   return {
     profile,
     progress,
+    mistakes,
     loading,
     initialise,
     toggleTask,
