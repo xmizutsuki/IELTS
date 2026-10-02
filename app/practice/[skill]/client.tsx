@@ -50,7 +50,7 @@ export function PracticeClient({ skill }: { skill: PracticeSkill }) {
       const selected = selectPracticeQuestions(
         getQuestionsForSkill(skill),
         storedAttempts,
-        8,
+        skill === "listening" ? 4 : 8,
       );
       setAttempts(storedAttempts);
       setStats(storedStats);
@@ -107,7 +107,7 @@ export function PracticeClient({ skill }: { skill: PracticeSkill }) {
     const selected = selectPracticeQuestions(
       getQuestionsForSkill(skill),
       attempts,
-      8,
+      skill === "listening" ? 4 : 8,
     );
     setSessionQuestions(selected);
     startSession();
@@ -206,7 +206,7 @@ export function PracticeClient({ skill }: { skill: PracticeSkill }) {
               </div>
               <div className="rounded-2xl bg-slate-50 p-4">
                 <Clock3 className="text-slate-600" size={20} />
-                <div className="mt-3 text-2xl font-bold">10–15m</div>
+                <div className="mt-3 text-2xl font-bold">skill === "listening" ? "30–40m" : "10–15m"</div>
                 <div className="text-xs text-slate-500">estimated time</div>
               </div>
             </div>
