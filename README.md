@@ -1,11 +1,60 @@
 # IELTS Band 8 Academy
 
-Local-first IELTS preparation app with an adaptive 8-week study plan.
+A local-first IELTS preparation web app built around an adaptive 8-week study plan.
 
-## Principles
-- No account or remote database required.
-- Study data is stored in the browser with IndexedDB.
-- IELTS beginners are taught the exam format before advanced strategy.
-- The long-term target is an evidence-based Band 8 readiness workflow.
+## Current MVP
 
-Development is in progress.
+- Beginner-friendly **IELTS from zero** introduction.
+- Complete **8-week / 56-day curriculum**.
+- Local onboarding for exam type, Band target and available study time.
+- Adaptive daily-plan screen that scales task durations to the learner's schedule.
+- Dashboard with local progress and skill estimates.
+- Skill introductions for Listening, Reading, Writing and Speaking.
+- Diagnostic baseline screen that avoids inventing a Band from insufficient evidence.
+- Progress analytics and local mistake bank foundation.
+- All learner state stored in **IndexedDB** in the browser.
+- No Supabase, database, account or login required.
+
+## Stack
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- IndexedDB via `idb`
+- Lucide icons
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Then open `http://localhost:3000`.
+
+## Build
+
+```bash
+npm run build
+npm run start
+```
+
+## Local-first architecture
+
+The browser stores:
+
+- learner profile;
+- current week/day;
+- completed study tasks;
+- study time;
+- skill estimates;
+- mistake-bank entries.
+
+The storage layer lives under `lib/storage`, keeping UI code independent from the persistence implementation.
+
+## Product principle
+
+> Data decides what to study next.
+
+The roadmap will expand the MVP with interactive IELTS question banks, timed mocks, Writing evaluation, Speaking recording/analysis, vocabulary review and curated resource discovery.
