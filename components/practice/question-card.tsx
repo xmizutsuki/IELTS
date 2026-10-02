@@ -23,8 +23,12 @@ export function QuestionCard({ question, answer, onAnswer, submitted }: Question
           </article>
         )}
 
-        {question.skill === "listening" && question.audioText && (
-          <ListeningPlayer key={question.id} text={question.audioText} />
+        {question.skill === "listening" && question.audioSource && (
+          <ListeningPlayer
+            key={question.audioSource.id}
+            source={question.audioSource}
+            revealSource={submitted}
+          />
         )}
 
         <article className="card p-6">
