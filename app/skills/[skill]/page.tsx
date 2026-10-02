@@ -1,8 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ArrowRight, BarChart3, BrainCircuit } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
-import { Skill } from "@/types";
+import { getPracticeStats } from "@/lib/storage/db";
+import { PracticeStats, Skill } from "@/types";
 
 const data: Record<Skill, { title: string; intro: string; essentials: string[]; tips: string[] }> = {
   listening: {
@@ -35,16 +39,60 @@ export default function SkillPage() {
   const params = useParams<{ skill: string }>();
   const skill = params.skill as Skill;
   const content = data[skill];
+  const practiceEnabled = skill === "reading" || skill === "listening";
+  const [stats, setStats] = useState<PracticeStats | null>(null);
+
+  useEffect(() => {
+    if (!practiceEnabled) return;
+    void getPracticeStats(skill).then(setStats);
+  }, [practiceEnabled, skill]);
 
   if (!content) return <AppShell><div className="card p-8">Skill not found.</div></AppShell>;
 
+  const weakestType = stats
+    ? Object.entries(stats.byType)
+        .filter(([, value]) => value && value.attempts > 0)
+        .sort((a, b) => (a[1]?.accuracy ?? 100) - (b[1]?.accuracy ?? 100))[0]
+    : undefined;
+
   return (
     <AppShell>
-      <header>
-        <div className="eyebrow">{skill}</div>
-        <h1 className="mt-2 text-4xl font-bold">{content.title}</h1>
-        <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-500">{content.intro}</p>
+      <header className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <div>
+          <div className="eyebrow">{skill}</div>
+          <h1 className="mt-2 text-4xl font-bold">{content.title}</h1>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-500">{content.intro}</p>
+        </div>
+        {practiceEnabled && (
+          <Link href={"/practice/" + skill} className="btn-primary gap-2">
+            Start practice <ArrowRight size={18} />
+          </Link>
+        )}
       </header>
+
+      {practiceEnabled && (
+        <section className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="card p-5">
+            <BarChart3 className="text-blue-700" size={20} />
+            <div className="mt-3 text-3xl font-bold">{stats?.attempts ?? 0}</div>
+            <div className="mt-1 text-xs text-slate-500">questions attempted</div>
+          </div>
+          <div className="card p-5">
+            <BrainCircuit className="text-blue-700" size={20} />
+            <div className="mt-3 text-3xl font-bold">{stats?.attempts ? (stats.accuracy + "%") : "—"}</div>
+            <div className="mt-1 text-xs text-slate-500">practice accuracy, not Band score</div>
+          </div>
+          <div className="card p-5">
+            <div className="eyebrow">Current weakness signal</div>
+            <div className="mt-3 text-lg font-bold capitalize">
+              {weakestType ? weakestType[0].replaceAll("_", " ") : "Build history first"}
+            </div>
+            <div className="mt-1 text-xs text-slate-500">
+              {weakestType ? (weakestType[1]?.accuracy ?? 0) + "% accuracy" : "Complete a practice set to personalise this."}
+            </div>
+          </div>
+        </section>
+      )}
 
       <div className="mt-8 grid gap-5 lg:grid-cols-2">
         <section className="card p-6">
@@ -72,10 +120,14 @@ export default function SkillPage() {
       </div>
 
       <section className="card mt-5 p-6">
-        <div className="eyebrow">Practice engine</div>
-        <h2 className="mt-2 text-xl font-bold">Next implementation layer</h2>
+        <div className="eyebrow">{practiceEnabled ? "Practice engine live" : "Next implementation layer"}</div>
+        <h2 className="mt-2 text-xl font-bold">
+          {practiceEnabled ? "Every answer becomes training data." : "Criterion-based practice is coming next."}
+        </h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">
-          The course schedule and progress engine are already connected. Interactive question sets, timed drills and AI feedback will plug into this skill page without changing your locally stored study profile.
+          {practiceEnabled
+            ? "Reading and Listening attempts are saved locally. Wrong answers are classified into your Mistake Bank, and recurring problems can increase that skill's priority in the daily study plan."
+            : "Writing and Speaking will use the same local-first architecture, but they require dedicated editors, recording and criterion-based evaluation rather than simple right/wrong scoring."}
         </p>
       </section>
     </AppShell>
