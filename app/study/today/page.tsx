@@ -8,14 +8,14 @@ import { getTodaysPlan } from "@/lib/adaptive/daily-plan";
 import { useLocalStudy } from "@/hooks/use-local-study";
 
 export default function TodayPage() {
-  const { profile, progress, loading, toggleTask, completeDay } = useLocalStudy();
+  const { profile, progress, mistakes, loading, toggleTask, completeDay } = useLocalStudy();
 
   if (loading || !profile || !progress) {
     return <AppShell><div className="card p-8 text-slate-500">Loading today&apos;s plan…</div></AppShell>;
   }
 
   const day = getDay(progress.currentWeek, progress.currentDay);
-  const plan = getTodaysPlan(profile, progress);
+  const plan = getTodaysPlan(profile, progress, mistakes);
   const allDone = plan.length > 0 && plan.every((task) => progress.completedTaskIds.includes(task.id));
 
   return (
