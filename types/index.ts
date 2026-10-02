@@ -90,6 +90,17 @@ export type QuestionType =
   | "form_completion"
   | "note_completion";
 
+export interface HumanAudioSource {
+  id: string;
+  url: string;
+  reader: string;
+  sourceTitle: string;
+  sourcePage: string;
+  duration: string;
+  provider: "LibriVox";
+  licenseNote: string;
+}
+
 export interface PracticeQuestion {
   id: string;
   skill: "reading" | "listening";
@@ -97,7 +108,7 @@ export interface PracticeQuestion {
   difficulty: 1 | 2 | 3 | 4 | 5;
   title: string;
   passage?: string;
-  audioText?: string;
+  audioSource?: HumanAudioSource;
   instruction: string;
   prompt: string;
   options?: string[];
