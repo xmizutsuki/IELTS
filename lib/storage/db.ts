@@ -1,4 +1,4 @@
-import { DBSchema, IDBPDatabase, openDB } from "idb";
+import { DBSchema, IDBPDatabase, IDBPObjectStore, openDB } from "idb";
 import {
   Mistake,
   PracticeQuestion,
@@ -203,8 +203,15 @@ function isAnswerCorrect(question: PracticeQuestion, answer: string) {
   return accepted.includes(normaliseAnswer(answer));
 }
 
+type SpellingObjectStore = IDBPObjectStore<
+  IELTSLocalDB,
+  ArrayLike<"profile" | "progress" | "mistakes" | "attempts" | "spelling">,
+  "spelling",
+  "readwrite"
+>;
+
 async function upsertSpellingItemInStore(
-  store: ReturnType<IDBPDatabase<IELTSLocalDB>["transaction"]>["objectStore"],
+  store: SpellingObjectStore,
   correct: string,
   wrong: string,
   source: SpellingItem["source"],
