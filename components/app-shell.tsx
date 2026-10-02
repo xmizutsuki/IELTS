@@ -12,6 +12,7 @@ import {
   Home,
   ListChecks,
   Settings,
+  SpellCheck2,
   Target,
 } from "lucide-react";
 
@@ -22,6 +23,7 @@ const navItems = [
   { href: "/ielts-zero", label: "IELTS from zero", icon: GraduationCap },
   { href: "/skills/reading", label: "Skills", icon: BookOpen },
   { href: "/practice/reading", label: "Practice", icon: BrainCircuit },
+  { href: "/spelling", label: "Spelling", icon: SpellCheck2 },
   { href: "/mistakes", label: "Mistakes", icon: ListChecks },
   { href: "/progress", label: "Progress", icon: BarChart3 },
   { href: "/diagnostic", label: "Diagnostic", icon: CircleHelp },
