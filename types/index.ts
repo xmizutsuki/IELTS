@@ -81,3 +81,69 @@ export interface Mistake {
   status: "active" | "improving" | "mastered";
   lastSeenAt: string;
 }
+
+export type QuestionType =
+  | "multiple_choice"
+  | "true_false_not_given"
+  | "yes_no_not_given"
+  | "sentence_completion"
+  | "form_completion"
+  | "note_completion";
+
+export interface PracticeQuestion {
+  id: string;
+  skill: "reading" | "listening";
+  questionType: QuestionType;
+  difficulty: 1 | 2 | 3 | 4 | 5;
+  title: string;
+  passage?: string;
+  audioText?: string;
+  instruction: string;
+  prompt: string;
+  options?: string[];
+  correctAnswer: string;
+  acceptedAnswers?: string[];
+  explanation: {
+    testedSkill: string;
+    evidence: string;
+    whyCorrect: string;
+    trap: string;
+    nextTime: string;
+  };
+  errorCategory:
+    | "vocabulary_gap"
+    | "paraphrase_failure"
+    | "distractor"
+    | "misread_question"
+    | "spelling"
+    | "word_limit"
+    | "inference"
+    | "not_given_confusion"
+    | "attention_loss"
+    | "strategy_error";
+}
+
+export interface QuestionAttempt {
+  id: string;
+  questionId: string;
+  skill: "reading" | "listening";
+  questionType: QuestionType;
+  answer: string;
+  correctAnswer: string;
+  isCorrect: boolean;
+  responseTimeMs: number;
+  mode: "practice" | "timed" | "mock";
+  createdAt: string;
+}
+
+export interface PracticeStats {
+  skill: "reading" | "listening";
+  attempts: number;
+  correct: number;
+  accuracy: number;
+  byType: Partial<Record<QuestionType, {
+    attempts: number;
+    correct: number;
+    accuracy: number;
+  }>>;
+}
