@@ -11,8 +11,8 @@ A local-first IELTS preparation web app built around an adaptive 8-week study pl
 - Dashboard with local progress and skill estimates.
 - Skill introductions for Listening, Reading, Writing and Speaking.
 - Interactive **Reading and Listening Practice Engine** with adaptive question selection.
-- Original practice bank covering T/F/NG, Y/N/NG, multiple choice and completion tasks.
-- One-play browser listening practice using local text-to-speech.
+- Original Reading practice bank plus human-audio Listening questions adapted to reusable public-domain source recordings.
+- Listening practice uses real human LibriVox recordings streamed from the Internet Archive; browser text-to-speech is not used.
 - Immediate correction with evidence, trap analysis and "why is this wrong?" feedback.
 - Practice attempts and recurring error categories persisted locally in IndexedDB.
 - Practice weaknesses feed the adaptive daily-plan priority without being mislabelled as Band scores.
