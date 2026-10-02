@@ -165,19 +165,11 @@ export async function recordQuestionAttempt(
     };
     await mistakeStore.put(mistake);
   } else if (existing) {
-    const attemptsForQuestion = await db.getAllFromIndex("attempts", "by-question", question.id);
-    const recentCorrect = attemptsForQuestion
-      .slice(-3)
-      .filter((item) => item.isCorrect)
-      .length;
-
-    if (recentCorrect >= 2) {
-      await mistakeStore.put({
-        ...existing,
-        status: existing.occurrences >= 3 ? "improving" : "mastered",
-        lastSeenAt: attempt.createdAt,
-      });
-    }
+    await mistakeStore.put({
+      ...existing,
+      status: existing.occurrences >= 3 ? "improving" : "mastered",
+      lastSeenAt: attempt.createdAt,
+    });
   }
 
   await transaction.done;
