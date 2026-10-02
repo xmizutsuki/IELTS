@@ -158,3 +158,32 @@ export interface PracticeStats {
     accuracy: number;
   }>>;
 }
+
+export type SpellingStage = 0 | 1 | 2 | 3 | 4 | 5;
+
+export interface SpellingItem {
+  id: string;
+  correct: string;
+  lastWrong: string;
+  wrongVariants: string[];
+  source: "practice" | "manual";
+  sourceSkill?: "listening" | "reading" | "writing" | "speaking";
+  createdAt: string;
+  lastReviewedAt?: string;
+  nextReviewAt: string;
+  stage: SpellingStage;
+  totalReviews: number;
+  correctReviews: number;
+  lapses: number;
+  mastered: boolean;
+}
+
+export interface SpellingReviewResult {
+  itemId: string;
+  answer: string;
+  isCorrect: boolean;
+  reviewedAt: string;
+  nextReviewAt: string;
+  stage: SpellingStage;
+}
+
