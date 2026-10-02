@@ -190,7 +190,9 @@ export function PracticeClient({ skill }: { skill: PracticeSkill }) {
             <div className="eyebrow">{skill} practice</div>
             <h1 className="mt-2 text-4xl font-bold tracking-tight">Adaptive practice set</h1>
             <p className="mt-4 max-w-2xl leading-7 text-slate-500">
-              This set prioritises questions you have not attempted yet. On later sessions, recently missed question types move forward automatically.
+              {skill === "listening"
+                ? "This set uses real human recordings. It prioritises recordings you have not attempted yet and later brings missed question types forward."
+                : "This set prioritises questions you have not attempted yet. On later sessions, recently missed question types move forward automatically."}
             </p>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-3">
@@ -206,7 +208,7 @@ export function PracticeClient({ skill }: { skill: PracticeSkill }) {
               </div>
               <div className="rounded-2xl bg-slate-50 p-4">
                 <Clock3 className="text-slate-600" size={20} />
-                <div className="mt-3 text-2xl font-bold">skill === "listening" ? "30–40m" : "10–15m"</div>
+                <div className="mt-3 text-2xl font-bold">{skill === "listening" ? "30–40m" : "10–15m"}</div>
                 <div className="text-xs text-slate-500">estimated time</div>
               </div>
             </div>
